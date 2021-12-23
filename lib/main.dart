@@ -10,7 +10,6 @@ void main() {
     home: Myapp(),
   ));
 }
-
 class Myapp extends StatefulWidget {
   const Myapp({Key? key}) : super(key: key);
 
@@ -21,8 +20,8 @@ class Myapp extends StatefulWidget {
 class _MyappState extends State<Myapp> {
   String name = "";
   List<String>_curencies= ["rupies","Dollar","Pound","others"];
-  String newitemselected="rupies";
-  String selectedItems="";
+  String initialSelectedItem="rupies";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,21 +40,33 @@ class _MyappState extends State<Myapp> {
                 });
               },
             ),
-          DropdownButton(
-              items: _curencies.map((String value){
-                return DropdownMenuItem(
-                  value: value,
-                    child: Text(value)
-                );
-              }).toList(),
-            onChanged: (String? newselectedItems){
-                setState(() {
-                  selectedItems=newselectedItems;
-                });
-
-            },
-          ),
-
+            //Dropdown Button in flutter
+            DropdownButton(
+                items: _curencies.map((String value){
+                  return DropdownMenuItem(
+                     child: Text(value),
+                      value: value,
+                  );
+                }).toList(),
+                onChanged: (String? items){
+                  setState(() {
+                    initialSelectedItem=items!;
+                  });
+                },
+                value:initialSelectedItem ,
+                icon:const Icon(Icons.arrow_drop_down_circle),
+                hint:const Text("this is hint"),
+              style:const TextStyle(
+                fontSize: 20,
+                color: Colors.yellow,
+                fontWeight: FontWeight.w700,
+              ),
+              alignment: Alignment.center,
+              elevation: 6,
+              iconSize: 20,
+              iconEnabledColor: Colors.green,
+              disabledHint: const Text("this is disabled colors"),
+            ),
             Padding(
               padding: const EdgeInsets.all(28.0),
               child: Text("the user input is $name"),
