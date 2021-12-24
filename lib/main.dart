@@ -224,7 +224,7 @@ class _CalculatopState extends State<Calculatop> {
 
 
   }
-
+//method to calculate the return
   String _CalculateTotalReturn() {
     double principal= double.parse(principalController.text);
     double rate= double.parse(rateofinterestController.text);
