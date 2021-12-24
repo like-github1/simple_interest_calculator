@@ -1,246 +1,212 @@
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 void main(){
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    title: 'silple interest calculator app',
-    home: Calculatop(),
+  runApp( MaterialApp(
+    theme: ThemeData(
+      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red).copyWith(secondary: Colors.indigoAccent),
+    ),
+     title: 'silple_interest_Calculator_app',
+      home: const Myapp(),
 
-   theme: ThemeData(
-     colorScheme: ColorScheme.fromSwatch
-       (primarySwatch: Colors.indigo).
-      copyWith(secondary: Colors.indigoAccent),
-
-   ),
   ));
 }
-class Calculatop extends StatefulWidget {
-  const Calculatop({Key? key}) : super(key: key);
+class Myapp extends StatefulWidget {
+  const Myapp({Key? key}) : super(key: key);
 
   @override
-  _CalculatopState createState() => _CalculatopState();
+  _MyappState createState() => _MyappState();
 }
-
-class _CalculatopState extends State<Calculatop> {
-  final _minimummPadding=5.0;
-  final List<String>_listitems=['rupies','dollar','others'];
-  TextEditingController principalController= TextEditingController();
-  TextEditingController termController= TextEditingController();
-  TextEditingController rateofinterestController= TextEditingController();
-  String result="";
-  String firstitem="";
-  final _formKey= GlobalKey<FormState>();
+class _MyappState extends State<Myapp> {
+  TextEditingController Principal= TextEditingController();
+  TextEditingController Rateofinterest= TextEditingController();
+  TextEditingController terms= TextEditingController();
+  final double _minpadding=5.0;
+  String dispaly="";
+  final List<String>_curencies= ["rupies","dollar","birr"];
+  String Initialvalue= "";
+  final _formkey=GlobalKey<FormState>();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    firstitem= _listitems[0];
+    Initialvalue=_curencies[0];
   }
-
   @override
   Widget build(BuildContext context) {
-    TextStyle? textStyle= Theme.of(context).textTheme.subtitle1;
     return Scaffold(
-      //resizeToAvoidBottomInset: false, it does not work for lareg number of widget
-      //for small screen size the Widget maybe hiden
-      appBar: AppBar(title: const Text("calculator"),centerTitle: true,),
+      appBar: AppBar(
+        title:const Text("Calculate interest"),
+        centerTitle: true,
+      ),
       body: Form(
-        key: _formKey,
+        key: _formkey,
         child: Padding(
-          padding: const EdgeInsets.all(28.0),
-          child: ListView(
-            children: <Widget>[
-              getimage(),
-              Padding(
-                padding:  EdgeInsets.only(top: _minimummPadding,bottom: _minimummPadding),
-                child: TextFormField(
-                  validator: (String? value){
-                    if(value!.isEmpty){
-                      return "please enter Principal amount";
-                    }
-                  },
-                   controller: principalController,
-                  keyboardType:TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp('[0.0-9.0]')),
-                ],
-                  decoration: InputDecoration(
-                    labelText: 'Principa',
-                    labelStyle:textStyle,
-                    hintText: "Enter principal e.g 1200",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
+          padding: const EdgeInsets.all(8.0),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView(
+              children: <Widget>[
+                 getimage(),
+                Padding(
+                  padding: EdgeInsets.only(top:_minpadding,bottom: _minpadding ),
+                  child: TextFormField(
+                    validator: (String? validate){
+                      if(validate!.isEmpty){
+                        return "please enter your principal value";
+                      }
+                    },
+                    controller: Principal,
+                    maxLength: 12,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+                    ],
+                    decoration: const InputDecoration(
+                      labelText: "Principal",
+                      hintText: "please enter principal",
                     ),
+
                   ),
                 ),
-              ),
-
-              Padding(
-                padding:  EdgeInsets.only(top: _minimummPadding,bottom: _minimummPadding),
-                child: TextFormField(
-                  validator: (String? value){
-                    if(value!.isEmpty){
-                      return "Rate of Inters";
-                    }
-                  },
-                  controller: rateofinterestController,
-                  keyboardType:TextInputType.number,
-
-                  style: textStyle,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp("[0.0-9.0]")),
-                  ],
-                  decoration: InputDecoration(
-                    labelText: 'Rate of Inters',
-                    labelStyle:textStyle,
-                    hintText: "Enter principal e.g 1200",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
+                const SizedBox(height: 9,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    validator: (String? validate){
+                      if(validate!.isEmpty){
+                        return "please enter your Rateofinterest";
+                      }
+                    },
+                    controller: Rateofinterest,
+                    maxLength: 12,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+                    ],
+                    decoration: const InputDecoration(
+                      labelText: "interest",
+                      hintText: "please enter interest rate",
                     ),
+
                   ),
                 ),
-              ),
-              Padding(
-                padding:  EdgeInsets.only(top: _minimummPadding,bottom: _minimummPadding),
-                child: Row(
-
+                Row(
                   children: <Widget>[
                     Expanded(
                       child: TextFormField(
-                        validator: (String? value){
-                          if(value!.isEmpty){
-                            return "Please Provide Term";
+                        validator: (String? validate){
+                          if(validate!.isEmpty){
+                            return "please enter your interest";
                           }
                         },
-                        controller: termController,
-                        keyboardType:TextInputType.number,
+                        controller: terms,
+                        maxLength: 12,
+                        keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(RegExp("[0.0-9.0]")),
+                          FilteringTextInputFormatter.allow(RegExp("[0-9]"))
                         ],
-                        decoration: InputDecoration(
-                          errorStyle: const TextStyle(
-                            color: Colors.red,
-                            fontSize: 12,
-                          ),
-                          labelText: 'Term',
-                          labelStyle:textStyle,
-                          hintText: "Enter principal e.g 1200",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                        decoration: const InputDecoration(
+                          counterText: "",
+                          labelText: "Term",
+                          hintText: "please enter your Term",
                         ),
+
                       ),
                     ),
-                    SizedBox(width: _minimummPadding*5),
+
                     Expanded(
                       child: DropdownButton(
+                        value: Initialvalue,
+                       onChanged: (String? items){
+                        setState(() {
+                          Initialvalue=items!;
+                        });
 
-                        value: firstitem,
-                        onChanged: (String? newitem){
+                       },
+                          items:_curencies.map((String value) {
+                            return DropdownMenuItem(
+                                child: Text(value),
+                              value: value,
+                            );
+                          }).toList(),
+
+                      ),
+                    ),
+
+
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: ElevatedButton(
+                          onPressed: (){
+                       setState(() {
+                         if(_formkey.currentState!.validate()){
+                           dispaly= _calculateTotalInterest();
+                         }
+
+                       });
+                          },
+                          child:const Text("Calculate"),
+                      ),
+                    ),
+                    const SizedBox(width: 5,),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: (){
                           setState(() {
-                            firstitem=newitem!;
+                            _reset();
                           });
                         },
-                        items: _listitems.map((String value){
-                          return DropdownMenuItem(
-                              child: Text(value),
-                            value: value,
-                          );
-                        }).toList(),
-                      ),
-                    ),
-
-
-                  ],
-                ),
-              ),
-              Padding(
-                padding:  EdgeInsets.only(top: _minimummPadding,bottom: _minimummPadding),
-                child: Row(
-                  children: <Widget>[
-                    ElevatedButton(
-                      onPressed: (){
-                       setState(() {
-                         if(_formKey.currentState!.validate()){
-                           result= _CalculateTotalReturn();
-                         }
-                       });
-                      },
-                      child: const Text("Calculate",textScaleFactor: 1.5,),
-                    ),
-                    SizedBox(width: _minimummPadding*6,),
-                    ElevatedButton(
-                      onPressed: (){
-                        setState(() {
-                          _reset();
-                        });
-                      },
-                      child: const Text(
-                          "Reset",
-                        textScaleFactor: 1.5,
+                        child:const Text("reset"),
                       ),
                     ),
                   ],
                 ),
-              ),
-             Padding(
-                padding: EdgeInsets.only(top: _minimummPadding,bottom: _minimummPadding),
-                child:Text(result),
-              )
+                Text(dispaly),
 
 
-
-            ],
+              ],
+            ),
           ),
         ),
       ),
+
     );
   }
 
-
-  Widget getimage() {
+   Widget getimage() {
     AssetImage assetImage= const AssetImage('assetss/interest.png');
-    Image image= Image(image: assetImage,width: 250,height: 250,);
-    return Container(
-      margin: EdgeInsets.all(_minimummPadding*10),
-        width: 250,
-        height: 150,
-        decoration: BoxDecoration(
-          color: Colors.black,
-          image: const DecorationImage(
-              image:AssetImage('assetss/interest.png'),
-            fit: BoxFit.cover,
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
-          border: Border.all(
-            color: Colors.green,
-            width: 2,
-          )
-        ),
-
+    Image image= Image(image: assetImage);
+    return Padding(
+      padding: const EdgeInsets.all(28.0),
+      child: Container(
+        color: Colors.red,
+        child: image,
+      ),
     );
 
+   }
 
-  }
-//method to calculate the return
-  String _CalculateTotalReturn() {
-    double principal= double.parse(principalController.text);
-    double rate= double.parse(rateofinterestController.text);
-    double term= double.parse(termController.text);
-    double totalamoutPay= principal+(principal*rate*term)/100;
-    String results = "After $term Year, your Investement will be $totalamoutPay$firstitem";
-    return results;
-
+ _calculateTotalInterest() {
+   double principal= double.parse(Principal.text);
+   double interest= double.parse(Rateofinterest.text);
+   double term= double.parse(terms.text);
+   double result= principal+ principal*interest*term/100;
+   return "you interest after $term Terms are $result $Initialvalue";
   }
 
   void _reset() {
-    principalController.text="";
-    rateofinterestController.text="";
-    termController.text="";
-    result="";
-    firstitem=_listitems[0];
+    Principal.text="";
+    Rateofinterest.text="";
+    terms.text="";
+    Initialvalue=_curencies[0];
+    dispaly="";
 
   }
 }
+
